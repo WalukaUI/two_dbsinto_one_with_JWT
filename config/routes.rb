@@ -5,10 +5,16 @@ Rails.application.routes.draw do
   resources :doctors
   resources :locations
   resources :patients 
+  resources :users
+  resources :departments
+  resources :cities
+  resources :countries, only: [:show, :index]
 
   #, only: [:show, :index]
   post "/signuppatient", to: "patients#create"
   post "/signupdoctor", to: "doctors#create"
+  post "/signup", to: "users#create"
+  get "/c&c/me", to: "users#show"
   get "/me", to: "patients#show"
   get "/doc", to: "doctors#sessionshow"
   post "/login", to: "sessions#create"
@@ -27,6 +33,14 @@ Rails.application.routes.draw do
   resources :patients do
     resources :doctors, only: [:show, :index]
     resources :appointments, only: [:show, :index]
+  end
+
+  resources :employees do
+    resources :projects, only: [:show, :index]
+  end
+
+  resources :projects do
+    resources :employees, only: [:show, :index]
   end
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

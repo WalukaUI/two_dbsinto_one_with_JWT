@@ -28,6 +28,15 @@ ActiveRecord::Schema.define(version: 2023_03_23_230108) do
     t.index ["patient_id"], name: "index_appointments_on_patient_id"
   end
 
+  create_table "cities", force: :cascade do |t|
+    t.string "name"
+    t.string "branch_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "country_id", null: false
+    t.index ["country_id"], name: "index_cities_on_country_id"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.bigint "doctor_id"
     t.bigint "patient_id"
@@ -37,6 +46,20 @@ ActiveRecord::Schema.define(version: 2023_03_23_230108) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["doctor_id"], name: "index_comments_on_doctor_id"
     t.index ["patient_id"], name: "index_comments_on_patient_id"
+  end
+
+  create_table "countries", force: :cascade do |t|
+    t.string "name"
+    t.string "branch_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "departments", force: :cascade do |t|
+    t.string "name"
+    t.string "dept_manager_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "doctor_locations", force: :cascade do |t|
@@ -63,6 +86,16 @@ ActiveRecord::Schema.define(version: 2023_03_23_230108) do
     t.boolean "isaccept_newpatients"
     t.boolean "video_vistits"
     t.boolean "doctor"
+  end
+
+  create_table "employees", force: :cascade do |t|
+    t.string "name"
+    t.string "section"
+    t.string "role"
+    t.integer "department_id"
+    t.integer "city_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "locations", force: :cascade do |t|
@@ -93,6 +126,35 @@ ActiveRecord::Schema.define(version: 2023_03_23_230108) do
     t.boolean "patient"
   end
 
+  create_table "project_employees", force: :cascade do |t|
+    t.integer "employee_id"
+    t.integer "project_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "projects", force: :cascade do |t|
+    t.string "name"
+    t.string "client_name"
+    t.string "sector"
+    t.integer "start_date"
+    t.integer "end_date"
+    t.integer "cost"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.string "password_digest"
+    t.string "position"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "email"
+    t.string "username"
+  end
+
   add_foreign_key "appointments", "doctors"
   add_foreign_key "appointments", "patients"
+  add_foreign_key "cities", "countries"
 end

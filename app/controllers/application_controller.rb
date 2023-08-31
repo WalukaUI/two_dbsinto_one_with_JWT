@@ -9,7 +9,8 @@ class ApplicationController < ActionController::API
     def authorize
         @current_user = Doctor.find_by(id: session[:user_id])
         @current_user1 = Patient.find_by(id: session[:user_id])
-        render json: { errors: ["Not authorized"] }, status: :unauthorized unless @current_user || @current_user1
+        @current_user2 = User.find_by(id: session[:user_id])
+        render json: { errors: ["Not authorized"] }, status: :unauthorized unless @current_user || @current_user1 || @current_user2
     end
 
     def render_unprocessable_entity_response(exception)
