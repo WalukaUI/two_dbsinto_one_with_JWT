@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
         if params[:patient]
           @patient = Patient.find_by(email: params[:email])
           if @patient&.authenticate(params[:password])
-            session[:user_id] = @patient.id
+            session[:meuser_id] = @patient.id
             render json: @patient, status: :created
           else
             render json: { error: "Invalid email or password" }, status: :unauthorized
@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
         elsif params[:doctor]
           @doctor = Doctor.find_by(email: params[:email])
           if @doctor&.authenticate(params[:password])
-            session[:user_id] = @doctor.id
+            session[:docuser_id] = @doctor.id
             render json: @doctor, status: :created
           else
             render json: { error: "Invalid email or password" }, status: :unauthorized
@@ -20,7 +20,7 @@ class SessionsController < ApplicationController
         elsif params[:user]
           user = User.find_by(name: params[:name])
           if user&.authenticate(params[:password])
-             session[:user_id] = user.id
+             session[:cncuser_id] = user.id
              render json: user, status: :created
           else
              render json: { error: "Invalid name or password" }, status: :unauthorized
@@ -28,9 +28,21 @@ class SessionsController < ApplicationController
         end
     end
 
-    def destroy
-        session.delete :user_id
+    def doc_destroy
+        session.delete :docuser_id
         render json: {message: "deleted"}
         head :no_content
     end
+
+    def me_destroy
+      session.delete :meuser_id
+      render json: {message: "deleted"}
+      head :no_content
+  end
+
+    def cnc_user_destroy
+      session.delete :cncuser_id
+      render json: {message: "deleted"}
+      head :no_content
+  end
 end

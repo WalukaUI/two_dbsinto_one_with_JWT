@@ -18,7 +18,9 @@ Rails.application.routes.draw do
   get "/me", to: "patients#show"
   get "/doc", to: "doctors#sessionshow"
   post "/login", to: "sessions#create"
-  delete "/logout", to: "sessions#destroy"
+  delete "/me/logout", to: "sessions#me_destroy"
+  delete "/doc/logout", to: "sessions#doc_destroy"
+  delete "/cnc/logout", to: "sessions#cnc_user_destroy"
 
   resources :locations do
     resources :doctors, only: [:show, :index]

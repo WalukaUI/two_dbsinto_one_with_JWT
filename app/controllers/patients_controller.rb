@@ -16,7 +16,7 @@ class PatientsController < ApplicationController
     def create
      patient = Patient.create(patient_params)
        if patient.valid?
-         session[:user_id] = patient.id
+         session[:meuser_id] = patient.id
          render json: patient.to_json(except: [:created_at, :updated_at, :password_digest]), status: :created
        else
          render json: { error: patient.errors.full_messages }, status: :unprocessable_entity
@@ -35,13 +35,16 @@ class PatientsController < ApplicationController
     end
 
     def show
-      patient = Patient.find_by(id: session[:user_id])
+      patient = Patient.find_by(id: session[:meuser_id])
+      puts "yesssssssssssssssss"
+      puts patient
+      puts "woooooooooooooooooo"
       render json: patient.to_json(except: [:created_at, :updated_at, :password_digest], include: [comment: {except: [:created_at, :updated_at]}]) 
     end
   
     private
     def authorize
-      return render json: { error: "Not authorized" }, status: :unauthorized unless session.include? :user_id
+      return render json: { error: "Not authorized" }, status: :unauthorized unless session.include? :meuser_id
     end
 
     def patient_params

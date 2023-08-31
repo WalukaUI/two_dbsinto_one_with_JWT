@@ -7,9 +7,9 @@ class ApplicationController < ActionController::API
     private
 
     def authorize
-        @current_user = Doctor.find_by(id: session[:user_id])
-        @current_user1 = Patient.find_by(id: session[:user_id])
-        @current_user2 = User.find_by(id: session[:user_id])
+        @current_user = Doctor.find_by(id: session[:docuser_id])
+        @current_user1 = Patient.find_by(id: session[:meuser_id])
+        @current_user2 = User.find_by(id: session[:cncuser_id])
         render json: { errors: ["Not authorized"] }, status: :unauthorized unless @current_user || @current_user1 || @current_user2
     end
 

@@ -11,7 +11,7 @@ class UsersController < ApplicationController
       user = User.create(user_params)
       if user.valid?
         # WelcomeMailer.welcome_email(user).deliver_later
-        session[:user_id] = user.id
+        session[:cncuser_id] = user.id
         render json: user, status: :created
       else
         render json: { error: user.errors.full_messages }, status: :unprocessable_entity
@@ -22,13 +22,13 @@ class UsersController < ApplicationController
         render json: {message: "User deleted"}
       end
       def show
-        user = User.find_by(id: session[:user_id])
+        user = User.find_by(id: session[:cncuser_id])
         render json: user
       end
     
       private
       def authorize
-        return render json: { error: "Not authorized" }, status: :unauthorized unless session.include? :user_id
+        return render json: { error: "Not authorized" }, status: :unauthorized unless session.include? :cncuser_id
       end
 
       def user_params

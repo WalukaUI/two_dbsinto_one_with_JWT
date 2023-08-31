@@ -17,7 +17,7 @@ class DoctorsController < ApplicationController
           render json: doctor.to_json(except: [:created_at, :updated_at, :password_digest])
     end
     def sessionshow
-      doctor = Doctor.find_by(id: session[:user_id])
+      doctor = Doctor.find_by(id: session[:docuser_id])
       render json: doctor.to_json(except: [:created_at, :updated_at,:password_digest], include: [appointments: { except: [:created_at, :updated_at]}], include: [comment: { except: [:created_at, :updated_at]}]), status: 200
     end
   
@@ -30,7 +30,7 @@ class DoctorsController < ApplicationController
     def create
       doctor = Doctor.create(doctor_params)
         if doctor.valid?
-          session[:user_id] = doctor.id
+          session[:docuser_id] = doctor.id
           render json: doctor.to_json(except: [:created_at, :updated_at, :password_digest]), status: :created
         else
           render json: { error: doctor.errors.full_messages }, status: :unprocessable_entity
