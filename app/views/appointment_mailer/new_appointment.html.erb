@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style>
+    body{background: linear-gradient(rgba(247, 236, 222), rgba(214, 229, 250));}
+    </style>
+  </head>
+  <body>
+    <h3><%= @patientOftheBooking.first_name%>, You have successfully Booked an Appointment</h3>
+    <p>Apointment Date: <%= @newBooking.date  %> </p>
+    <p>Apointment Time: <%= @newBooking.time  %> Hrs</p>
+    <p>Doctor's name: <%= @doc.first_name  %> <%= @doc.last_name  %></p>
+    <p>
+      To login to the site, just follow this link: <a><%= @url %></a>.
+    </p>
+    <p>Thanks for new Booking and have a great day!</p>
+  </body>
+</html>

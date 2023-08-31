@@ -1,0 +1,18 @@
+databases:
+  - name: doctor_appointments
+    databaseName: doctor_appointments
+    user: doctor_appointments_user
+
+services:
+  - type: web
+    name: doc_appointment_booking_app
+    env: ruby
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec puma -C config/puma.rb"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: doctor_appointments
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
