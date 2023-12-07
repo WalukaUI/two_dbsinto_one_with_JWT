@@ -1,8 +1,9 @@
-Backend for Doctor appointment Bookig app....
+Backend for Doctor appointment Bookig app and TnT project manager app....
 
-😎\***\*Features\*\***😎
+😎\***\*Backend Features of Doctor appointment Bookig app\*\***😎
+URL = https://doctor-appointment-creator.netlify.app/
 
-Tables in the app
+⭐**_Tables of the App_**⭐
 
 - Doctors
 - Patients
@@ -24,11 +25,14 @@ Tables in the app
 
 ![Alt text](./appointment.jpg?raw=true "Title")
 
-**\* Backend of TnT project manager app \*\***
+
+
+
+**\* Backend Features of TnT project manager app \*\***
 
 URL = https://project-manager-bkend.herokuapp.com/cities
 
-⭐**_Tables_**⭐
+⭐**_Tables of the App_**⭐
 
 - cities
 - countries
