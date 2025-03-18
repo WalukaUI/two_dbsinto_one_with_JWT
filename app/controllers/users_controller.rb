@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
     # skip_before_action :authorize, only: :create
-    before_action :authorize, only: [:show]
+    before_action :authenticate_user, only: [:show]
 
       def index
        user=User.all
@@ -11,7 +11,7 @@ class UsersController < ApplicationController
       user = User.create(user_params)
       if user.valid?
         # WelcomeMailer.welcome_email(user).deliver_later
-        session[:cncuser_id] = user.id
+        #session[:cncuser_id] = user.id
         render json: user, status: :created
       else
         render json: { error: user.errors.full_messages }, status: :unprocessable_entity
@@ -27,9 +27,9 @@ class UsersController < ApplicationController
       end
     
       private
-      def authorize
-        return render json: { error: "Not authorized" }, status: :unauthorized unless session.include? :cncuser_id
-      end
+      #def authorize
+       # return render json: { error: "Not authorized" }, status: :unauthorized unless session.include? :cncuser_id
+      #end
 
       def user_params
         params.permit(:name, :password, :password_confirmation, :username, :email, :position, :user )

@@ -1,7 +1,9 @@
 class DoctorsController < ApplicationController
-    skip_before_action :authorize, only: [:show, :index, :create, :sessionshow]
+    include JwtToken    
+    skip_before_action :authenticate_user, only: [:show, :index, :create, :sessionshow]
     # before_action :authorize, only: [:show, :index, :create, :sessionshow]
-    
+    rescue_from JWT::VerificationError, with: :invalid_token
+    rescue_from JWT::DecodeError, with: :decode_error
     rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
     def index
@@ -16,13 +18,23 @@ class DoctorsController < ApplicationController
         end
           render json: doctor.to_json(except: [:created_at, :updated_at, :password_digest])
     end
+    
     def sessionshow
-      doctor = Doctor.find_by(id: session[:docuser_id])
-      render json: doctor.to_json(except: [:created_at, :updated_at,:password_digest], include: [appointments: { except: [:created_at, :updated_at]}], include: [comment: { except: [:created_at, :updated_at]}]), status: 200
-    end
-  
+        header = request.headers['Authorization']
+        if header
+            header = header.split(' ').last
+            @decoded = jwt_decode(header)
+            @current_doc = Doctor.find(@decoded[:user_id])
+            if @current_doc
+               render json: @current_doc.to_json(except: [:created_at, :updated_at, :password_digest], include: [comment: {except: [:created_at, :updated_at]}])
+            else
+               render json: { errors: ["Not authorized"] }, status: :unauthorized
+            end
+         end
+    end  
+
     def show
-          # doctor = Doctor.find(params[:id])
+          #doctor = Doctor.find(params[:id])
           doctor = Doctor.find_by(id: params[:id])
           render json: doctor.to_json(except: [:created_at, :updated_at,:password_digest], include: [appointments: { except: [:created_at, :updated_at]}], include: [comment: { except: [:created_at, :updated_at]}]), status: 200
     end
@@ -30,7 +42,6 @@ class DoctorsController < ApplicationController
     def create
       doctor = Doctor.create(doctor_params)
         if doctor.valid?
-          session[:docuser_id] = doctor.id
           render json: doctor.to_json(except: [:created_at, :updated_at, :password_digest]), status: :created
         else
           render json: { error: doctor.errors.full_messages }, status: :unprocessable_entity

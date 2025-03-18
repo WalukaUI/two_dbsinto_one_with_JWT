@@ -2,7 +2,10 @@ require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-
+  #config.hosts << "rails-api-balancer-456754264.us-east-2.elb.amazonaws.com"
+  # config.hosts << "ec2-3-145-46-117.us-east-2.compute.amazonaws.com"
+  config.hosts << "myappsbackend.com"
+  #config.hosts << "www.myappsbackend.com"
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.

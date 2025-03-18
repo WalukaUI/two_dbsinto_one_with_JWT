@@ -15,13 +15,10 @@ Rails.application.routes.draw do
   post "/signupdoctor", to: "doctors#create"
   post "/signup", to: "users#create"
   get "/c&c/me", to: "users#show"
-  get "/me", to: "patients#show"
+  get "/me", to: "patients#sessionshow"
   get "/doc", to: "doctors#sessionshow"
-  post "/login", to: "sessions#create"
-  delete "/me/logout", to: "sessions#me_destroy"
-  delete "/doc/logout", to: "sessions#doc_destroy"
-  delete "/cnc/logout", to: "sessions#cnc_user_destroy"
-
+  post "/login", to: "authentication#login"
+ 
   resources :locations do
     resources :doctors, only: [:show, :index]
   end
@@ -45,5 +42,4 @@ Rails.application.routes.draw do
     resources :employees, only: [:show, :index]
   end
 
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-end
+ end

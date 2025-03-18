@@ -1,6 +1,6 @@
 class CountriesController < ApplicationController
   # skip_before_action :authorize, only: :index
-  before_action :authorize, only: [:show]
+  before_action :authenticate_user, only: [:show]
     rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
 

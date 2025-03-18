@@ -1,16 +1,29 @@
+require 'jwt'
 class ApplicationController < ActionController::API
-    include ActionController::Cookies
-    rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
-
-    before_action :authorize
+   #include ActionController::Cookies
+    include JwtToken
+    include ExceptionHandler
+   #rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
+    rescue_from JWT::VerificationError, with: :invalid_token
+    rescue_from JWT::DecodeError, with: :decode_error
+    before_action :authenticate_user
 
     private
 
-    def authorize
-        @current_user = Doctor.find_by(id: session[:docuser_id])
-        @current_user1 = Patient.find_by(id: session[:meuser_id])
-        @current_user2 = User.find_by(id: session[:cncuser_id])
-        render json: { errors: ["Not authorized"] }, status: :unauthorized unless @current_user || @current_user1 || @current_user2
+    def authenticate_user
+        header = request.headers['Authorization']
+        if header
+            header = header.split(' ').last
+            @decoded = jwt_decode(header)
+        end
+    end
+
+    def invalid_token
+        render json: { invalid_token: 'invalid token' }
+    end
+ 
+    def decode_error
+        render json: { decode_error: 'decode error' }
     end
 
     def render_unprocessable_entity_response(exception)
