@@ -14,9 +14,8 @@ URL = https://doctor-appointment-creator.netlify.app/
 
 ...Used below technologies...
 
-- Cookies and Sessions
+- JWT Tokens for Authentication 
 - Action Mailer
-- Authentication
 - Serializing
 - Active record Validation
 - Error handling
